@@ -1,0 +1,15 @@
+{
+  "id": "/",
+  "name": "Escuela Dominical Digital",
+  "short_name": "Escuela Dominical",
+  "description": "Lecciones bíblicas, ejercicios y progreso semanal.",
+  "lang": "es-GT",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f5f7fb",
+  "theme_color": "#102544",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
