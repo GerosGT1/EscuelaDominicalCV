@@ -16,7 +16,7 @@ export function BottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-20 bg-white border-t border-neutral-100 lg:hidden"
+      className="fixed bottom-0 left-0 right-0 z-20 bg-white dark:bg-neutral-900 border-t border-neutral-100 dark:border-neutral-800 transition-colors lg:hidden"
       aria-label="Navegación inferior"
     >
       <div className="flex">
@@ -29,8 +29,8 @@ export function BottomNav() {
               cn(
                 'flex-1 flex flex-col items-center justify-center py-2 gap-0.5 text-xs transition-colors',
                 isActive
-                  ? 'text-primary-700 font-semibold'
-                  : 'text-neutral-500 hover:text-neutral-700'
+                  ? 'text-primary-700 dark:text-primary-400 font-semibold'
+                  : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200'
               )
             }
           >
@@ -38,7 +38,7 @@ export function BottomNav() {
               <>
                 <div className={cn(
                   'w-10 h-6 flex items-center justify-center rounded-full transition-all',
-                  isActive && 'bg-primary-100'
+                  isActive && 'bg-primary-100 dark:bg-primary-950/80 text-primary-600 dark:text-primary-300'
                 )}>
                   <Icon className="w-5 h-5" />
                 </div>

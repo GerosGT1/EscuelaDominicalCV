@@ -71,14 +71,14 @@ export function Sidebar({ open = true, onClose }: SidebarProps) {
 
       <aside
         className={cn(
-          'fixed top-0 left-0 z-30 h-full w-64 flex-shrink-0 transition-transform duration-300',
-          'bg-white border-r border-neutral-100 shadow-card-lg flex flex-col',
+          'fixed top-0 left-0 z-30 h-full w-64 flex-shrink-0 transition-all duration-300',
+          'bg-white dark:bg-neutral-900 border-r border-neutral-100 dark:border-neutral-800 shadow-card-lg flex flex-col',
           'lg:static lg:translate-x-0',
           open ? 'translate-x-0' : '-translate-x-full'
         )}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-neutral-100">
+        <div className="flex items-center justify-between p-5 border-b border-neutral-100 dark:border-neutral-800">
           <div className="flex items-center gap-3">
             <img
               src="/logos/logo-escuela-dominical.png"
@@ -94,13 +94,13 @@ export function Sidebar({ open = true, onClose }: SidebarProps) {
               <BookOpen className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-xs font-semibold text-primary-900 leading-tight">Escuela</p>
-              <p className="text-xs text-neutral-500 leading-tight">Dominical Digital</p>
+              <p className="text-xs font-semibold text-primary-900 dark:text-primary-300 leading-tight">Escuela</p>
+              <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-tight">Dominical Digital</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="lg:hidden p-1 rounded-lg text-neutral-400 hover:text-neutral-600 hover:bg-neutral-100"
+            className="lg:hidden p-1 rounded-lg text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800"
             aria-label="Cerrar menú"
           >
             <X className="w-5 h-5" />
@@ -109,12 +109,12 @@ export function Sidebar({ open = true, onClose }: SidebarProps) {
 
         {/* Perfil */}
         {profile && (
-          <div className="p-4 border-b border-neutral-100">
-            <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-50">
+          <div className="p-4 border-b border-neutral-100 dark:border-neutral-800">
+            <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800/60">
               <Avatar name={profile.full_name} size="md" />
               <div className="min-w-0">
-                <p className="text-sm font-semibold text-neutral-900 truncate">{profile.full_name}</p>
-                <p className="text-xs text-neutral-500 capitalize">
+                <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 truncate">{profile.full_name}</p>
+                <p className="text-xs text-neutral-500 dark:text-neutral-400 capitalize">
                   {profile.role === 'admin' ? 'Administrador'
                     : profile.role === 'teacher' ? 'Maestro' : 'Alumno'}
                 </p>
@@ -135,8 +135,8 @@ export function Sidebar({ open = true, onClose }: SidebarProps) {
                 cn(
                   'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150',
                   isActive
-                    ? 'bg-primary-50 text-primary-700 font-semibold'
-                    : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900'
+                    ? 'bg-primary-50 dark:bg-primary-950/70 text-primary-700 dark:text-primary-300 font-semibold'
+                    : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100'
                 )
               }
             >
@@ -147,10 +147,10 @@ export function Sidebar({ open = true, onClose }: SidebarProps) {
         </nav>
 
         {/* Cerrar sesión */}
-        <div className="p-4 border-t border-neutral-100">
+        <div className="p-4 border-t border-neutral-100 dark:border-neutral-800">
           <button
             onClick={handleLogout}
-            className="btn-ghost btn-sm w-full justify-start text-danger-600 hover:bg-danger-50 hover:text-danger-700"
+            className="btn-ghost btn-sm w-full justify-start text-danger-600 hover:bg-danger-50 dark:hover:bg-red-950/40 hover:text-danger-700"
           >
             <LogOut className="w-4 h-4" />
             Cerrar sesión

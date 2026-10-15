@@ -8,6 +8,19 @@
     <link rel="icon" type="image/png" href="/logos/logo-escuela-dominical.png" />
     <link rel="apple-touch-icon" href="/icons/pwa-192x192.png" />
     <title>Escuela Dominical Digital · Asambleas de Dios</title>
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem('edd-theme');
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (saved === 'dark' || (!saved && prefersDark)) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

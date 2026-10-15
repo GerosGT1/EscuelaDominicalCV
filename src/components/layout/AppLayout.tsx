@@ -8,7 +8,7 @@ export function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
-    <div className="flex h-screen overflow-hidden bg-neutral-50">
+    <div className="flex h-screen overflow-hidden bg-neutral-50 dark:bg-neutral-950 transition-colors duration-200">
       {/* Sidebar adaptable para escritorio y móvil */}
       <Sidebar
         open={sidebarOpen}

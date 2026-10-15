@@ -7,8 +7,11 @@
   *, *::before, *::after { box-sizing: border-box; }
   html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
   body {
-    @apply bg-neutral-50 text-neutral-900 font-sans antialiased;
+    @apply bg-neutral-50 text-neutral-900 font-sans antialiased transition-colors duration-200;
     min-height: 100dvh;
+  }
+  .dark body {
+    @apply bg-neutral-950 text-neutral-100;
   }
   h1, h2, h3, h4, h5, h6 { @apply font-display font-semibold; }
 }
@@ -21,7 +24,7 @@
   }
   .btn-primary {
     @apply btn bg-primary-700 text-white hover:bg-primary-800 focus:ring-primary-500
-           shadow-card hover:shadow-card-md;
+           shadow-card hover:shadow-card-md dark:bg-primary-600 dark:hover:bg-primary-700;
   }
   .btn-gold {
     @apply btn bg-gradient-gold text-white hover:opacity-90 focus:ring-gold-500
@@ -29,10 +32,12 @@
   }
   .btn-outline {
     @apply btn border border-neutral-300 bg-white text-neutral-700
-           hover:bg-neutral-50 focus:ring-primary-500;
+           hover:bg-neutral-50 focus:ring-primary-500
+           dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700;
   }
   .btn-ghost {
-    @apply btn text-neutral-600 hover:bg-neutral-100 focus:ring-primary-500;
+    @apply btn text-neutral-600 hover:bg-neutral-100 focus:ring-primary-500
+           dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-white;
   }
   .btn-danger {
     @apply btn bg-danger-500 text-white hover:bg-danger-600 focus:ring-danger-500;
@@ -43,34 +48,38 @@
   .btn-xl  { @apply px-8 py-4 text-lg; }
 
   .card {
-    @apply bg-white rounded-2xl shadow-card border border-neutral-100;
+    @apply bg-white rounded-2xl shadow-card border border-neutral-100
+           dark:bg-neutral-900 dark:border-neutral-800 dark:text-neutral-100;
   }
   .card-hover {
-    @apply card transition-all duration-200 hover:shadow-card-lg hover:-translate-y-0.5 cursor-pointer;
+    @apply card transition-all duration-200 hover:shadow-card-lg hover:-translate-y-0.5 cursor-pointer
+           dark:hover:border-neutral-700;
   }
 
   .input-base {
     @apply w-full rounded-xl border border-neutral-300 bg-white px-4 py-2.5 text-sm text-neutral-900
            placeholder:text-neutral-400 transition-all duration-200
            focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500
-           disabled:bg-neutral-50 disabled:text-neutral-400;
+           disabled:bg-neutral-50 disabled:text-neutral-400
+           dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-500
+           dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:disabled:bg-neutral-800 dark:disabled:text-neutral-500;
   }
-  .input-error { @apply border-danger-500 focus:ring-danger-500 focus:border-danger-500; }
+  .input-error { @apply border-danger-500 focus:ring-danger-500 focus:border-danger-500 dark:border-danger-500; }
 
   .badge {
     @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium;
   }
-  .badge-blue   { @apply badge bg-primary-100 text-primary-700; }
-  .badge-gold   { @apply badge bg-gold-100 text-gold-700; }
-  .badge-green  { @apply badge bg-success-50 text-success-700; }
-  .badge-gray   { @apply badge bg-neutral-100 text-neutral-600; }
-  .badge-red    { @apply badge bg-danger-50 text-danger-600; }
+  .badge-blue   { @apply badge bg-primary-100 text-primary-700 dark:bg-primary-950/70 dark:text-primary-300 dark:border dark:border-primary-800/40; }
+  .badge-gold   { @apply badge bg-gold-100 text-gold-700 dark:bg-gold-950/70 dark:text-gold-300 dark:border dark:border-gold-800/40; }
+  .badge-green  { @apply badge bg-success-50 text-success-700 dark:bg-emerald-950/70 dark:text-emerald-300 dark:border dark:border-emerald-800/40; }
+  .badge-gray   { @apply badge bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300 dark:border dark:border-neutral-700; }
+  .badge-red    { @apply badge bg-danger-50 text-danger-600 dark:bg-red-950/70 dark:text-red-300 dark:border dark:border-red-800/40; }
 
   .section-title {
-    @apply text-xl font-display font-semibold text-neutral-900;
+    @apply text-xl font-display font-semibold text-neutral-900 dark:text-neutral-100;
   }
   .section-subtitle {
-    @apply text-sm text-neutral-500 mt-1;
+    @apply text-sm text-neutral-500 dark:text-neutral-400 mt-1;
   }
 
   /* Scrollbar elegante */
@@ -84,6 +93,12 @@
     background-color: #cbd5e1;
     border-radius: 9999px;
   }
+  .dark .scrollbar-thin {
+    scrollbar-color: #334155 transparent;
+  }
+  .dark .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: #334155;
+  }
 }
 
 /* Animaciones de página */
@@ -92,5 +107,5 @@
 /* Estilos para contenido bíblico */
 .bible-text {
   @apply italic text-primary-800 border-l-4 border-gold-400 pl-4 py-2 my-4
-         bg-primary-50 rounded-r-lg;
+         bg-primary-50 rounded-r-lg dark:text-primary-200 dark:border-gold-500 dark:bg-primary-950/40;
 }
