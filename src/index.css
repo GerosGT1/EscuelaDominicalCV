@@ -109,3 +109,40 @@
   @apply italic text-primary-800 border-l-4 border-gold-400 pl-4 py-2 my-4
          bg-primary-50 rounded-r-lg dark:text-primary-200 dark:border-gold-500 dark:bg-primary-950/40;
 }
+
+/* Soporte de alto contraste para modo oscuro en todo el sistema */
+@layer utilities {
+  .dark .text-neutral-900 {
+    color: #f8fafc !important;
+  }
+  .dark .text-neutral-800 {
+    color: #f1f5f9 !important;
+  }
+  .dark .text-neutral-700 {
+    color: #e2e8f0 !important;
+  }
+  .dark .text-neutral-600 {
+    color: #cbd5e1 !important;
+  }
+  .dark .text-neutral-500 {
+    color: #94a3b8 !important;
+  }
+  .dark .text-primary-900 {
+    color: #dbeafe !important;
+  }
+  .dark .text-primary-800 {
+    color: #bfdbfe !important;
+  }
+  .dark .bg-neutral-50 {
+    background-color: #1e293b !important;
+  }
+  .dark .bg-neutral-100 {
+    background-color: #334155 !important;
+  }
+  .dark .border-neutral-100 {
+    border-color: #1e293b !important;
+  }
+  .dark .border-neutral-200 {
+    border-color: #334155 !important;
+  }
+}

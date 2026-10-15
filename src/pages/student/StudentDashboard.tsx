@@ -78,18 +78,18 @@ export function StudentDashboard() {
       {/* Métricas rápidas */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { icon: BookOpen, label: 'Lecciones', value: '—', color: 'bg-primary-50 text-primary-700' },
-          { icon: CheckSquare, label: 'Ejercicios', value: recentAttempts.length.toString(), color: 'bg-success-50 text-success-700' },
-          { icon: TrendingUp, label: 'Progreso', value: '—', color: 'bg-gold-50 text-gold-700' },
-          { icon: Award, label: 'Promedio', value: latestScore !== null ? `${latestScore}` : '—', color: 'bg-purple-50 text-purple-700' },
+          { icon: BookOpen, label: 'Lecciones', value: '—', color: 'bg-primary-50 dark:bg-primary-950/70 text-primary-700 dark:text-primary-300' },
+          { icon: CheckSquare, label: 'Ejercicios', value: recentAttempts.length.toString(), color: 'bg-success-50 dark:bg-emerald-950/70 text-success-700 dark:text-emerald-300' },
+          { icon: TrendingUp, label: 'Progreso', value: '—', color: 'bg-gold-50 dark:bg-gold-950/70 text-gold-700 dark:text-gold-300' },
+          { icon: Award, label: 'Promedio', value: latestScore !== null ? `${latestScore}` : '—', color: 'bg-purple-50 dark:bg-purple-950/70 text-purple-700 dark:text-purple-300' },
         ].map(({ icon: Icon, label, value, color }) => (
           <div key={label} className="card p-4 flex items-center gap-3">
             <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${color}`}>
               <Icon className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-xs text-neutral-500">{label}</p>
-              <p className="text-xl font-bold text-neutral-900">{value}</p>
+              <p className="text-xs text-neutral-500 dark:text-neutral-400">{label}</p>
+              <p className="text-xl font-bold text-neutral-900 dark:text-white">{value}</p>
             </div>
           </div>
         ))}
