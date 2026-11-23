@@ -18,6 +18,7 @@ import { LessonDetailPage } from '@/pages/student/LessonDetailPage'
 import { ExercisesPage } from '@/pages/student/ExercisesPage'
 import { ExercisePage } from '@/pages/student/ExercisePage'
 import { ProgressPage } from '@/pages/student/ProgressPage'
+import { StudentQuestionsPage } from '@/pages/student/StudentQuestionsPage'
 
 // Teacher pages
 import { TeacherDashboard } from '@/pages/teacher/TeacherDashboard'
@@ -27,6 +28,10 @@ import { TeacherExercisesPage } from '@/pages/teacher/TeacherExercisesPage'
 import { ExerciseBuilderPage } from '@/pages/teacher/ExerciseBuilderPage'
 import { TeacherStudentsPage } from '@/pages/teacher/TeacherStudentsPage'
 import { TeacherReportsPage } from '@/pages/teacher/TeacherReportsPage'
+import { TeacherQuestionsPage } from '@/pages/teacher/TeacherQuestionsPage'
+
+// Shared pages
+import { ProfilePage } from '@/pages/shared/ProfilePage'
 
 // Admin pages
 import { AdminDashboard } from '@/pages/admin/AdminDashboard'
@@ -85,6 +90,8 @@ function AppRouter() {
           <Route path="/ejercicios" element={<ExercisesPage />} />
           <Route path="/ejercicios/:id" element={<ExercisePage />} />
           <Route path="/mi-progreso" element={<ProgressPage />} />
+          <Route path="/preguntas" element={<StudentQuestionsPage />} />
+          <Route path="/perfil" element={<ProfilePage />} />
         </Route>
 
         {/* Rutas del maestro */}
@@ -103,6 +110,7 @@ function AppRouter() {
           <Route path="/maestro/ejercicios/:id" element={<ExerciseBuilderPage />} />
           <Route path="/maestro/alumnos" element={<TeacherStudentsPage />} />
           <Route path="/maestro/reportes" element={<TeacherReportsPage />} />
+          <Route path="/maestro/preguntas" element={<TeacherQuestionsPage />} />
         </Route>
 
         {/* Rutas del administrador */}

@@ -49,7 +49,7 @@ export function AdminDashboard() {
         ))}
       </div>
 
-      <div className="grid sm:grid-cols-2 gap-4">
+      <div className="grid sm:grid-cols-3 gap-4">
         <Link to="/admin/usuarios" className="card-hover p-6 flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-primary-700 dark:bg-primary-600 flex items-center justify-center flex-shrink-0">
             <Users className="w-6 h-6 text-white" />
@@ -57,6 +57,15 @@ export function AdminDashboard() {
           <div>
             <h3 className="font-semibold text-neutral-900 dark:text-white">Gestionar usuarios</h3>
             <p className="text-sm text-neutral-500 dark:text-neutral-400">Roles, permisos y cuentas</p>
+          </div>
+        </Link>
+        <Link to="/admin/reportes" className="card-hover p-6 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-emerald-600 flex items-center justify-center flex-shrink-0">
+            <BarChart2 className="w-6 h-6 text-white" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-neutral-900 dark:text-white">Reportes y Notas</h3>
+            <p className="text-sm text-neutral-500 dark:text-neutral-400">Métricas globales y exportación</p>
           </div>
         </Link>
         <Link to="/admin/configuracion" className="card-hover p-6 flex items-center gap-4">

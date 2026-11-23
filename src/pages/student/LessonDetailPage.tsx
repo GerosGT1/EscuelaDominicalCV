@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { ArrowLeft, BookOpen, Calendar, CheckSquare, User, ZoomIn } from 'lucide-react'
+import { ArrowLeft, BookOpen, Calendar, CheckSquare, User, ZoomIn, HelpCircle } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { Badge } from '@/components/ui/Badge'
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
@@ -203,11 +203,15 @@ export function LessonDetailPage() {
         </div>
       )}
 
-      {/* Botón de ejercicio */}
-      <div className="flex justify-center pb-4">
-        <Link to="/ejercicios" className="btn-gold btn-lg">
+      {/* Botón de ejercicio y Pregunta al maestro */}
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pb-4">
+        <Link to="/ejercicios" className="btn-gold btn-lg w-full sm:w-auto shadow-sm">
           <CheckSquare className="w-5 h-5" />
           Realizar el ejercicio de esta lección
+        </Link>
+        <Link to={`/preguntas?leccion=${lesson.id}`} className="btn-outline btn-lg w-full sm:w-auto shadow-sm">
+          <HelpCircle className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+          ¿Dudas? Pregúntale a tu maestro
         </Link>
       </div>
 

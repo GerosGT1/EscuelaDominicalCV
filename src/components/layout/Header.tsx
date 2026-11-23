@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { Menu, Bell, Sun, Moon } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 import { useThemeStore } from '@/store/themeStore'
@@ -51,7 +52,9 @@ export function Header({ onMenuClick, title }: HeaderProps) {
           </button>
 
           {profile && (
-            <Avatar name={profile.full_name} size="sm" />
+            <Link to="/perfil" className="hover:opacity-85 transition-opacity" title="Mi perfil">
+              <Avatar name={profile.full_name} src={profile.avatar_url} size="sm" />
+            </Link>
           )}
         </div>
       </div>

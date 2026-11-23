@@ -10,6 +10,7 @@ export interface Profile {
   role: Role
   group_id: string | null
   avatar_url: string | null
+  phone?: string | null
   is_active: boolean
   created_at: string
   group?: Group
@@ -100,8 +101,25 @@ export interface Attempt {
   status: AttemptStatus
   started_at: string
   submitted_at: string | null
+  feedback?: string | null
   exercise?: Exercise
   student?: Profile
+}
+
+export interface StudentQuestion {
+  id: string
+  student_id: string
+  teacher_id?: string | null
+  lesson_id?: string | null
+  group_id?: string | null
+  question: string
+  answer?: string | null
+  status: 'pending' | 'answered'
+  answered_at?: string | null
+  created_at: string
+  student?: Profile
+  teacher?: Profile
+  lesson?: Lesson
 }
 
 export interface Answer {

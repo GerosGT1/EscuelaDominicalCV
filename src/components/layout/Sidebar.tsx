@@ -1,7 +1,8 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 import {
   LayoutDashboard, BookOpen, FileText, Users, Settings,
-  BarChart2, CheckSquare, GraduationCap, BookMarked, LogOut, X
+  BarChart2, CheckSquare, GraduationCap, BookMarked, LogOut, X,
+  HelpCircle, User
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
@@ -21,6 +22,8 @@ const studentNav: NavItem[] = [
   { to: '/lecciones', icon: <BookOpen className="w-5 h-5" />, label: 'Lecciones' },
   { to: '/ejercicios', icon: <CheckSquare className="w-5 h-5" />, label: 'Ejercicios' },
   { to: '/mi-progreso', icon: <BarChart2 className="w-5 h-5" />, label: 'Mi progreso' },
+  { to: '/preguntas', icon: <HelpCircle className="w-5 h-5" />, label: 'Preguntas al Maestro' },
+  { to: '/perfil', icon: <User className="w-5 h-5" />, label: 'Mi Perfil' },
 ]
 
 const teacherNav: NavItem[] = [
@@ -29,6 +32,8 @@ const teacherNav: NavItem[] = [
   { to: '/maestro/ejercicios', icon: <FileText className="w-5 h-5" />, label: 'Ejercicios' },
   { to: '/maestro/alumnos', icon: <GraduationCap className="w-5 h-5" />, label: 'Alumnos' },
   { to: '/maestro/reportes', icon: <BarChart2 className="w-5 h-5" />, label: 'Reportes' },
+  { to: '/maestro/preguntas', icon: <HelpCircle className="w-5 h-5" />, label: 'Preguntas Alumnos' },
+  { to: '/perfil', icon: <User className="w-5 h-5" />, label: 'Mi Perfil' },
 ]
 
 const adminNav: NavItem[] = [
@@ -37,6 +42,7 @@ const adminNav: NavItem[] = [
   { to: '/admin/lecciones', icon: <BookMarked className="w-5 h-5" />, label: 'Lecciones' },
   { to: '/admin/reportes', icon: <BarChart2 className="w-5 h-5" />, label: 'Reportes' },
   { to: '/admin/configuracion', icon: <Settings className="w-5 h-5" />, label: 'Configuración' },
+  { to: '/perfil', icon: <User className="w-5 h-5" />, label: 'Mi Perfil' },
 ]
 
 interface SidebarProps {
@@ -110,16 +116,23 @@ export function Sidebar({ open = true, onClose }: SidebarProps) {
         {/* Perfil */}
         {profile && (
           <div className="p-4 border-b border-neutral-100 dark:border-neutral-800">
-            <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800/60">
-              <Avatar name={profile.full_name} size="md" />
-              <div className="min-w-0">
-                <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 truncate">{profile.full_name}</p>
+            <Link
+              to="/perfil"
+              onClick={onClose}
+              className="flex items-center gap-3 p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800/60 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors group cursor-pointer"
+              title="Ver mi perfil"
+            >
+              <Avatar name={profile.full_name} src={profile.avatar_url ?? undefined} size="md" />
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                  {profile.full_name}
+                </p>
                 <p className="text-xs text-neutral-500 dark:text-neutral-400 capitalize">
                   {profile.role === 'admin' ? 'Administrador'
                     : profile.role === 'teacher' ? 'Maestro' : 'Alumno'}
                 </p>
               </div>
-            </div>
+            </Link>
           </div>
         )}
 
