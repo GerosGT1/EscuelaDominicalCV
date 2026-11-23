@@ -146,17 +146,34 @@ export function ProfilePage() {
         }
       }
 
-      // Actualizar tabla profiles
-      const { data: updatedProfile, error } = await supabase
+      // Actualizar tabla profiles (con tolerancia por si la columna 'phone' aún no ha sido agregada en Supabase)
+      let updatePayload: Record<string, any> = {
+        full_name: fullName.trim(),
+        avatar_url: finalAvatarUrl,
+      }
+      if (phone.trim()) {
+        updatePayload.phone = phone.trim()
+      }
+
+      let { data: updatedProfile, error } = await supabase
         .from('profiles')
-        .update({
-          full_name: fullName.trim(),
-          phone: phone.trim() || null,
-          avatar_url: finalAvatarUrl,
-        })
+        .update(updatePayload)
         .eq('id', profile.id)
         .select()
         .single()
+
+      // Si la base de datos reporta que la columna 'phone' no existe, reintentar sin phone
+      if (error && (error.message?.includes('phone') || error.code === 'PGRST204')) {
+        delete updatePayload.phone
+        const retry = await supabase
+          .from('profiles')
+          .update(updatePayload)
+          .eq('id', profile.id)
+          .select()
+          .single()
+        updatedProfile = retry.data
+        error = retry.error
+      }
 
       if (error) throw error
 

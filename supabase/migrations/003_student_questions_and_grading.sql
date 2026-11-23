@@ -2,9 +2,12 @@
 -- ESCUELA DOMINICAL DIGITAL - MIGRACIÓN 003: PREGUNTAS AL MAESTRO Y CALIFICACIONES
 -- ==============================================================================
 
--- 1. Agregar columna feedback a attempts si no existe
+-- 1. Agregar columna feedback a attempts y columna phone a profiles si no existen
 ALTER TABLE public.attempts 
   ADD COLUMN IF NOT EXISTS feedback TEXT;
+
+ALTER TABLE public.profiles
+  ADD COLUMN IF NOT EXISTS phone TEXT;
 
 -- 2. Asegurar que maestros puedan insertar intentos/calificaciones directamente para alumnos
 DO $$ BEGIN
