@@ -12,11 +12,13 @@ export function StudentDashboard() {
   const { profile } = useAuth()
   const [currentLesson, setCurrentLesson] = useState<Lesson | null>(null)
   const [recentAttempts, setRecentAttempts] = useState<Attempt[]>([])
+  const [churchName, setChurchName] = useState('Auditorium Cristo Viene')
+  const [churchLogoUrl, setChurchLogoUrl] = useState('/logos/logo-iglesia.jpg')
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function load() {
-      const [lessonRes, attemptsRes] = await Promise.all([
+      const [lessonRes, attemptsRes, settingsRes] = await Promise.all([
         supabase
           .from('lessons')
           .select('*, teacher:profiles(full_name)')
@@ -31,9 +33,16 @@ export function StudentDashboard() {
           .eq('status', 'graded')
           .order('submitted_at', { ascending: false })
           .limit(5),
+        supabase.from('settings').select('*'),
       ])
       if (lessonRes.data) setCurrentLesson(lessonRes.data as unknown as Lesson)
       if (attemptsRes.data) setRecentAttempts(attemptsRes.data as unknown as Attempt[])
+      if (settingsRes.data && settingsRes.data.length > 0) {
+        const map: Record<string, string> = {}
+        settingsRes.data.forEach((s: { key: string; value: string }) => { map[s.key] = s.value })
+        if (map.church_name?.trim()) setChurchName(map.church_name.trim())
+        if (map.church_logo_url?.trim()) setChurchLogoUrl(map.church_logo_url.trim())
+      }
       setLoading(false)
     }
     if (profile) load()
@@ -57,20 +66,42 @@ export function StudentDashboard() {
           <div className="absolute -top-8 -right-8 w-48 h-48 rounded-full bg-white" />
           <div className="absolute -bottom-12 -left-12 w-64 h-64 rounded-full bg-gold-400" />
         </div>
-        <div className="relative z-10">
-          <p className="text-primary-200 text-sm mb-1">Bienvenido de vuelta</p>
-          <h1 className="text-2xl font-display font-bold text-white mb-2">
-            {profile?.full_name?.split(' ')[0]} 👋
-          </h1>
-          <p className="text-primary-100 text-sm">
-            Continúa tu estudio de la Palabra de Dios
-          </p>
-          {latestScore !== null && (
-            <div className="mt-4 inline-flex items-center gap-2 bg-white/20 rounded-full px-4 py-1.5">
-              <Star className="w-4 h-4 text-gold-300" />
-              <span className="text-sm font-semibold">Última nota: {latestScore}/100</span>
+        <div className="relative z-10 flex items-start justify-between gap-3">
+          <div className="flex-1 min-w-0">
+            <p className="text-primary-200 text-xs sm:text-sm mb-1 font-medium">Bienvenido de vuelta</p>
+            <h1 className="text-2xl sm:text-3xl font-display font-bold text-white mb-1.5 tracking-tight">
+              {profile?.full_name?.split(' ')[0]} 👋
+            </h1>
+            <p className="text-primary-100 text-xs sm:text-sm font-medium">
+              Sigamos aprendiendo de la Palabra de Dios
+            </p>
+            <p className="text-xs sm:text-sm text-gold-300 font-semibold mt-1 tracking-wide">
+              {churchName}
+            </p>
+            {latestScore !== null && (
+              <div className="mt-3.5 inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-sm rounded-full px-3.5 py-1 text-white border border-white/20">
+                <Star className="w-3.5 h-3.5 text-gold-300 fill-gold-300" />
+                <span className="text-xs sm:text-sm font-semibold">Última nota: {latestScore}/100</span>
+              </div>
+            )}
+          </div>
+
+          {/* Logotipo de la iglesia */}
+          <div className="flex-shrink-0">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white p-1.5 shadow-lg border border-white/40 flex items-center justify-center overflow-hidden">
+              <img
+                src={churchLogoUrl}
+                alt={churchName}
+                className="w-full h-full object-contain rounded-xl"
+                onError={(e) => {
+                  const img = e.currentTarget
+                  if (img.src !== '/logos/logo-iglesia.jpg') {
+                    img.src = '/logos/logo-iglesia.jpg'
+                  }
+                }}
+              />
             </div>
-          )}
+          </div>
         </div>
       </div>
 
