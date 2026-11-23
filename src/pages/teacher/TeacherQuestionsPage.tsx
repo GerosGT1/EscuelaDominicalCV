@@ -40,23 +40,16 @@ export function TeacherQuestionsPage() {
     setLoading(true)
 
     try {
-      let query = supabase
-        .from('student_questions')
-        .select(`
-          *,
-          student:profiles!student_id(full_name, avatar_url, class_id),
-          teacher:profiles!teacher_id(full_name, avatar_url),
-          lesson:lessons(title, number)
-        `)
-        .order('created_at', { ascending: false })
-
-      // Si el maestro tiene un grupo/clase asignada, filtramos preferentemente por su grupo
-      if (profile.role === 'teacher' && profile.group_id) {
-        query = query.or(`group_id.eq.${profile.group_id},teacher_id.eq.${profile.id}`)
-      }
-
       const [qRes, lRes] = await Promise.all([
-        query,
+        supabase
+          .from('student_questions')
+          .select(`
+            *,
+            student:profiles!student_id(full_name, avatar_url, group_id),
+            teacher:profiles!teacher_id(full_name, avatar_url),
+            lesson:lessons(title, number)
+          `)
+          .order('created_at', { ascending: false }),
         supabase.from('lessons').select('*').order('number', { ascending: true }),
       ])
 
@@ -118,14 +111,21 @@ export function TeacherQuestionsPage() {
 
   const pendingCount = questions.filter((q) => q.status === 'pending').length
   const answeredCount = questions.filter((q) => q.status === 'answered').length
+  const generalCount = questions.filter((q) => !q.lesson_id).length
 
   const filteredQuestions = questions.filter((q) => {
     // Filtro de estado
     if (filterStatus === 'pending' && q.status !== 'pending') return false
     if (filterStatus === 'answered' && q.status !== 'answered') return false
 
-    // Filtro de lección
-    if (selectedLessonFilter !== 'all' && q.lesson_id !== selectedLessonFilter) return false
+    // Filtro de lección o tipo de consulta
+    if (selectedLessonFilter === 'general') {
+      if (q.lesson_id) return false
+    } else if (selectedLessonFilter === 'lessons') {
+      if (!q.lesson_id) return false
+    } else if (selectedLessonFilter !== 'all') {
+      if (q.lesson_id !== selectedLessonFilter) return false
+    }
 
     // Filtro de búsqueda
     if (searchTerm.trim()) {
@@ -134,7 +134,8 @@ export function TeacherQuestionsPage() {
       const matchesQuestion = q.question.toLowerCase().includes(term)
       const matchesAnswer = q.answer?.toLowerCase().includes(term) ?? false
       const matchesLesson = q.lesson?.title?.toLowerCase().includes(term) ?? false
-      if (!matchesStudent && !matchesQuestion && !matchesAnswer && !matchesLesson) return false
+      const matchesGeneral = !q.lesson_id && (term.includes('general') || term.includes('abierta') || term.includes('biblica'))
+      if (!matchesStudent && !matchesQuestion && !matchesAnswer && !matchesLesson && !matchesGeneral) return false
     }
 
     return true
@@ -162,9 +163,9 @@ export function TeacherQuestionsPage() {
       </div>
 
       {/* Tarjetas de métricas rápidas */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <div className="card p-4 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-primary-50 dark:bg-primary-950/70 text-primary-700 dark:text-primary-300 flex items-center justify-center font-bold">
+          <div className="w-10 h-10 rounded-xl bg-primary-50 dark:bg-primary-950/70 text-primary-700 dark:text-primary-300 flex items-center justify-center font-bold flex-shrink-0">
             <HelpCircle className="w-5 h-5" />
           </div>
           <div>
@@ -174,7 +175,7 @@ export function TeacherQuestionsPage() {
         </div>
 
         <div className="card p-4 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gold-50 dark:bg-gold-950/70 text-gold-700 dark:text-gold-300 flex items-center justify-center font-bold">
+          <div className="w-10 h-10 rounded-xl bg-gold-50 dark:bg-gold-950/70 text-gold-700 dark:text-gold-300 flex items-center justify-center font-bold flex-shrink-0">
             <Clock className="w-5 h-5" />
           </div>
           <div>
@@ -183,8 +184,18 @@ export function TeacherQuestionsPage() {
           </div>
         </div>
 
-        <div className="card p-4 flex items-center gap-3 col-span-2 sm:col-span-1">
-          <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 flex items-center justify-center font-bold">
+        <div className="card p-4 flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950/70 text-amber-700 dark:text-amber-300 flex items-center justify-center font-bold flex-shrink-0">
+            <MessageSquare className="w-5 h-5" />
+          </div>
+          <div>
+            <p className="text-xl font-bold text-neutral-900 dark:text-white">{generalCount}</p>
+            <p className="text-xs text-neutral-500 dark:text-neutral-400">Consultas generales</p>
+          </div>
+        </div>
+
+        <div className="card p-4 flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 flex items-center justify-center font-bold flex-shrink-0">
             <CheckCircle2 className="w-5 h-5" />
           </div>
           <div>
@@ -234,20 +245,26 @@ export function TeacherQuestionsPage() {
             </button>
           </div>
 
-          {/* Filtro por Lección */}
+          {/* Filtro por Tipo / Lección */}
           <div className="flex items-center gap-2">
             <Filter className="w-4 h-4 text-neutral-400 flex-shrink-0" />
             <select
               value={selectedLessonFilter}
               onChange={(e) => setSelectedLessonFilter(e.target.value)}
-              className="input-base text-xs py-1.5 px-3 min-w-[200px]"
+              className="input-base text-xs py-1.5 px-3 min-w-[240px]"
             >
-              <option value="all">Todas las lecciones</option>
-              {lessons.map((l) => (
-                <option key={l.id} value={l.id}>
-                  Lección #{l.number}: {l.title}
-                </option>
-              ))}
+              <option value="all">Todas las preguntas</option>
+              <option value="general">📖 Consultas Generales / Abiertas</option>
+              <option value="lessons">📚 Solo preguntas de Lecciones</option>
+              {lessons.length > 0 && (
+                <optgroup label="Filtrar por lección específica">
+                  {lessons.map((l) => (
+                    <option key={l.id} value={l.id}>
+                      Lección #{l.number}: {l.title}
+                    </option>
+                  ))}
+                </optgroup>
+              )}
             </select>
           </div>
         </div>
@@ -320,7 +337,10 @@ export function TeacherQuestionsPage() {
                         Lec. #{q.lesson.number}: {q.lesson.title}
                       </span>
                     ) : (
-                      <span className="badge badge-gray text-[11px]">Consulta general</span>
+                      <span className="badge badge-gold flex items-center gap-1 text-[11px] font-medium">
+                        <HelpCircle className="w-3 h-3 text-gold-600 dark:text-gold-400" />
+                        Consulta Bíblica General
+                      </span>
                     )}
 
                     {isAnswered ? (

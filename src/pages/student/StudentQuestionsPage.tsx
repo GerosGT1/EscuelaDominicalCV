@@ -223,9 +223,13 @@ export function StudentQuestionsPage() {
                       )}
                     </Badge>
 
-                    {lessonInfo && (
+                    {lessonInfo ? (
                       <span className="inline-flex items-center gap-1 text-xs text-primary-700 dark:text-primary-300 bg-primary-50 dark:bg-primary-950/60 px-2 py-0.5 rounded-full font-medium">
                         <BookOpen className="w-3 h-3" /> Lección {lessonInfo.number}: {lessonInfo.title}
+                      </span>
+                    ) : (
+                      <span className="badge badge-gold text-[11px] font-medium flex items-center gap-1">
+                        <HelpCircle className="w-3 h-3 text-gold-600 dark:text-gold-400" /> Consulta Bíblica General
                       </span>
                     )}
                   </div>
