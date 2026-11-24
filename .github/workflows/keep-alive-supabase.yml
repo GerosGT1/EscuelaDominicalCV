@@ -1,0 +1,34 @@
+name: Supabase Keep-Alive (Prevenir Pausa por Inactividad)
+
+on:
+  schedule:
+    # Se ejecuta automáticamente cada 3 días a las 08:00 UTC (02:00 hora de Centroamérica)
+    - cron: '0 8 */3 * *'
+  workflow_dispatch: # Permite probarlo manualmente desde la pestaña Actions en GitHub
+
+jobs:
+  ping-supabase:
+    name: Ping Base de Datos Supabase
+    runs-on: ubuntu-latest
+    steps:
+      - name: Realizar consulta ligera a Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL || 'https://lefkoexfpxbfaynyoszp.supabase.co' }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_ANON_KEY || 'sb_publishable_-wQHINDv7DKOKsE6qOH7fg_m74pipqV' }}
+        run: |
+          echo "Conectando con la base de datos de Supabase para registrar actividad..."
+          HTTP_STATUS=$(curl -s -o response.json -w "%{http_code}" \
+            -H "apikey: $SUPABASE_KEY" \
+            -H "Authorization: Bearer $SUPABASE_KEY" \
+            "$SUPABASE_URL/rest/v1/settings?select=key&limit=1")
+          
+          echo "Código HTTP recibido: $HTTP_STATUS"
+          echo "Respuesta:"
+          cat response.json
+          echo ""
+          
+          if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 300 ]; then
+            echo "✅ Proyecto activo. Consulta registrada exitosamente en Supabase."
+          else
+            echo "⚠️ Código de respuesta: $HTTP_STATUS"
+          fi
